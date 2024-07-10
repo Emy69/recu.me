@@ -26,33 +26,40 @@
  * For more information, please refer to <https://unlicense.org>
  */
 
-window.addEventListener("load",function(e) {
-  let url=window.location.href;
-  if (url.indexOf("play.php?video=")>0) {
-    setTimeout(function() {
-      url="https://recurbate.com/api/get.php?"+url.substring(31);
-      let btn=document.getElementById("play_button");
-      if (btn) {
-        let edit=document.createElement("input");
-        edit.style.width="920px";
-        edit.style.border=0;
-        edit.style.outline="none";
-        edit.style.padding="10px 6px";
-        edit.style.borderRadius="6px";
-        edit.style.marginBottom="20px";
-        edit.style.font="bold 12px/12px Consolas";
-        edit.style.cursor="pointer";
-        edit.value=url+"&token="+btn.dataset.token;
-        edit.readOnly=true;
-        edit.onclick=function(e) {
-          this.focus();
-          this.select();
-          document.execCommand("copy");
-          this.blur();
-        }
-        let vid=document.getElementsByClassName("video-content-wrapper")[0];
-        vid.insertBefore(edit,vid.firstChild);
+window.addEventListener("load", function() {
+  let url = window.location.href;
+  let btn = document.getElementById("play_button");
+
+  if (btn) {
+    let token = btn.getAttribute("data-token");
+    let videoId = btn.getAttribute("data-video-id");
+    
+    if (token && videoId) {
+      let apiUrl = "https://es.recu.me/api/get.php?video_id=" + videoId + "&token=" + token;
+
+      let edit = document.createElement("input");
+      edit.style.width = "920px";
+      edit.style.border = "0";
+      edit.style.outline = "none";
+      edit.style.padding = "10px 6px";
+      edit.style.borderRadius = "6px";
+      edit.style.marginBottom = "20px";
+      edit.style.font = "bold 12px/12px Consolas";
+      edit.style.cursor = "pointer";
+      edit.value = apiUrl;
+      edit.readOnly = true;
+
+      edit.onclick = function() {
+        this.focus();
+        this.select();
+        document.execCommand("copy");
+        this.blur();
+      };
+
+      let vidWrapper = document.querySelector(".video-content-wrapper");
+      if (vidWrapper) {
+        vidWrapper.insertBefore(edit, vidWrapper.firstChild);
       }
-    },10);
+    }
   }
-},false);
+}, false);
